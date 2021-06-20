@@ -2,26 +2,25 @@
 
 ## Description
 
-Simple backend for providing access to recipes and associated chefs. Data is cached in in-memory sotrage (ets)<br>
-in order to limit request to contentful. Every 10 seconds all data is fetched and upserted.
+Simple backend for providing access to recipes and associated chefs. Data is cached in in-memory storage (ets)<br>
+in order to limit number of requests to contentful. Every 10 seconds all data is being fetched and upserted.
 
 ## Out of scope:
 * Frontend part.
-* Release, docerisation & deployment
+* Release, dockerisation & deployment
 * Authentication for gql endpoint
 * Telemetry, proper logging etc.
-* some nice things like credo, dialyzer.
-* Only basic entitiels like chef and recipe are implemented. I decied to skip others due to time constraint, but it\'s should not be a problem to add them if needed.
-
+* Some nice things like credo, dialyzer.
+* Only basic entities like `chef` and `recipe` are implemented. I decied to skip others due to time limit constraint, but it should not be a problem to add the rest if needed.
 
 
 ## Installation
   * Install dependencies with `mix deps.get`
   * Decrypt secrets with `mix secret <secret code>`
-  * Start API endpoints with `MIX_ENV=prod mix phx.server`
+  * Start server with `MIX_ENV=prod mix phx.server`
 
 ## Tests
- Run tests with `mix test` 
+ Run tests with `mix test`
 
 ## GQL query example:
 ### Request:
