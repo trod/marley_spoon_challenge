@@ -6,25 +6,25 @@ defmodule MarleySpoon.Client do
   alias MarleySpoon.Storage
 
   @chef "chef"
-  @reciepe "recipe"
+  @recipe "recipe"
 
   @spec fetch_and_upsert_chefs() :: list()
-  def fetch_and_upsert_chefs, do: do_fetch_and_upsert_entries(@chef)
+  def fetch_and_upsert_chefs, do: do_fetch_and_upsert_entries(@chef, Storage.Chefs)
 
   @spec fetch_and_upsert_recipes() :: list()
-  def fetch_and_upsert_recipes, do: do_fetch_and_upsert_entries(@reciepe)
+  def fetch_and_upsert_recipes, do: do_fetch_and_upsert_entries(@recipe, Storage.Recipes)
 
-  defp do_fetch_and_upsert_entries(type) do
+  defp do_fetch_and_upsert_entries(type, mod) do
     processor =
       case type do
         @chef -> &process_chef_entries/1
-        @reciepe -> &process_recipe_entries/1
+        @recipe -> &process_recipe_entries/1
       end
 
     with {:ok, entries, total: _total_count_of_entries} <-
            fetch_entries(type),
          {:ok, processed_entries} <- processor.(entries) do
-      Enum.map(processed_entries, &Storage.Chefs.put(&1.entry.id, &1.entry))
+      Enum.map(processed_entries, &mod.put(&1.entry.id, &1.entry))
     end
   end
 
@@ -51,7 +51,6 @@ defmodule MarleySpoon.Client do
       entries
       |> Enum.map(&extract_recipe_params/1)
       |> Enum.map(&Recipe.from_map/1)
-      |> IO.inspect()
       |> Enum.map(&handle_result(&1))
       |> Enum.split_with(&(&1.status == :ok))
 

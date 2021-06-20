@@ -22,6 +22,11 @@ defmodule MarleySpoon.Storage.Chefs do
     GenServer.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
+  @spec all() :: list()
+  def all() do
+    :ets.tab2list(@t) |> Enum.map(fn {_key, value} -> value end)
+  end
+
   @spec get_by_id(binary()) :: binary() | :not_found
   def get_by_id(id) do
     case :ets.lookup(@t, id) do
@@ -34,7 +39,7 @@ defmodule MarleySpoon.Storage.Chefs do
   end
 
   @spec put(binary(), map()) :: boolean()
-  def put(key, value) when is_map(value) do
-    :ets.insert(@t, {key, value})
+  def put(key, %MarleySpoon.Model.Chef{} = chef) do
+    :ets.insert(@t, {key, chef})
   end
 end

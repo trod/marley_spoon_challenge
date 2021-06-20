@@ -33,8 +33,13 @@ defmodule MarleySpoon.Storage.Recipes do
     end
   end
 
+  @spec all() :: list()
+  def all() do
+    :ets.tab2list(@t) |> Enum.map(fn {_key, value} -> value end)
+  end
+
   @spec put(binary(), map()) :: boolean()
-  def put(key, value) when is_map(value) do
-    :ets.insert(@t, {key, value})
+  def put(key, %MarleySpoon.Model.Recipe{} = recipe) do
+    :ets.insert(@t, {key, recipe})
   end
 end

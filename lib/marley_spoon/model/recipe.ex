@@ -1,6 +1,5 @@
 defmodule MarleySpoon.Model.Recipe do
   import Ecto.Changeset
-  alias MarleySpoon.Model.Chef
 
   use Ecto.Schema
 
