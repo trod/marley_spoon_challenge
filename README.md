@@ -9,6 +9,7 @@ in order to limit number of requests to contentful. Every 10 seconds all data is
 * Frontend part.
 * Release, dockerisation & deployment
 * Authentication for gql endpoint
+* Pagination for gql endpooint
 * Telemetry, proper logging etc.
 * Some nice things like credo, dialyzer.
 * Only basic entities like `chef` and `recipe` are implemented. I decied to skip others due to time limit constraint, but it should not be a problem to add the rest if needed.
