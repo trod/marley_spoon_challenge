@@ -4,9 +4,12 @@ defmodule MarleySpoon.Worker do
   """
 
   use GenServer
+  alias MarleySpoon.Importer
+
   require Logger
 
   @interval 10_000
+  @supported_entities [:chef, :recipe]
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, args, name: __MODULE__)
@@ -19,18 +22,13 @@ defmodule MarleySpoon.Worker do
   end
 
   def handle_info(:tick, state) do
-    if Application.get_env(:marley_spoon, :worker_enabled), do: work()
+    if Application.get_env(:marley_spoon, __MODULE__)[:enabled], do: work()
 
     {:noreply, state}
   end
 
   defp work do
-    Logger.info("Start chefs update")
-    MarleySpoon.Client.fetch_and_upsert_chefs()
-
-    Logger.info("Start recipes update")
-    MarleySpoon.Client.fetch_and_upsert_recipes()
-
-    Logger.info("Update is done")
+    {:ok, count} = Importer.fetch_all(@supported_entities)
+    Logger.info("Update is finished, #{count} entities upserted.")
   end
 end

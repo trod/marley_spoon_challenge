@@ -16,6 +16,6 @@ config :secrex,
   key_file: ".secret-key",
   files: ["config/prod.secret.exs"]
 
-config :marley_spoon, MarleySpoon.Worker, enabled: true
+config :marley_spoon, MarleySpoon.Worker, enabled: false
 
 import_config "#{Mix.env()}.exs"

@@ -1,6 +1,7 @@
 defmodule MarleySpoon.Model.Base do
   @callback from_map(map) :: {:ok, struct} | {:error, {atom, [keyword()]}}
   @callback changeset(map) :: Ecto.Changeset.t()
+
   defmacro __using__(_opts) do
     quote do
       @behaviour unquote(__MODULE__)

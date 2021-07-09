@@ -1,5 +1,5 @@
-defmodule MarleySpoon.ClientTest do
-  alias MarleySpoon.Client
+defmodule MarleySpoon.ImporterTest do
+  alias MarleySpoon.Importer
   alias MarleySpoon.Fixtures.Chef, as: ChefFixture
   alias MarleySpoon.Fixtures.Recipe, as: RecipeFixture
   alias Contentful.Delivery.Entries
@@ -8,18 +8,16 @@ defmodule MarleySpoon.ClientTest do
 
   import Mock
 
-  describe "#fetch_and_upsert_chefs/0" do
+  describe "#fetch_all/0" do
     test "get a list of chefs and upserts it" do
       with_mocks([
         {Query, [], [content_type: fn Entries, "chef" -> {Entries, [content_type: "chef"]} end]},
         {Query, [], [fetch_all: fn {Entries, content_type: "chef"} -> ChefFixture.chefs() end]}
       ]) do
-        assert [true, true, true] == Client.fetch_and_upsert_chefs()
+        assert {:ok, 3} == Importer.fetch_all([:chef])
       end
     end
-  end
 
-  describe "#fetch_and_upsert_recipes/0" do
     test "get a list of recipes and upserts it" do
       with_mocks([
         {Query, [],
@@ -27,7 +25,7 @@ defmodule MarleySpoon.ClientTest do
         {Query, [],
          [fetch_all: fn {Entries, content_type: "recipe"} -> RecipeFixture.recipes() end]}
       ]) do
-        assert [true, true, true, true] == Client.fetch_and_upsert_recipes()
+        assert {:ok, 4} == Importer.fetch_all([:recipe])
       end
     end
   end
